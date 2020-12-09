@@ -1,0 +1,9 @@
+.venv
+.vscode
+__pycache__
+.env
+.pytest_cache
+build
+dist
+pygiftbit.egg-info
+.pypirc
