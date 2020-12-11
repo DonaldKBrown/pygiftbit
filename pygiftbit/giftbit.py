@@ -20,6 +20,17 @@ TESTBED_HOST = 'https://api-testbed.giftbit.com/papi/v1'
 PRODUCTION_HOST = 'https://api.giftbit.com/papi/v1'
 
 
+def check_args(subject, message, gift_template):
+    """
+    This will raise an error if an improper
+    combination of arguments is passed.
+    """
+    if gift_template and (subject or message):
+        raise ConflictError('Supply only gift_template OR subject and message.')
+    elif not gift_template and not (subject and message):
+        raise ConflictError('You must supply both subject and message if not supplying template.')
+
+
 class Client():
     """
     Giftbit API Client
@@ -155,10 +166,7 @@ class Client():
         subject: The subject of the email to send. Not to be used with a template.
         gift_template: The name of the email template you have created on the Giftbit website.
         """
-        if gift_template and (subject or message):
-            raise ConflictError('Supply only gift_template OR subject and message.')
-        elif not gift_template and not (subject and message):
-            raise ConflictError('You must supply both subject and message if not supplying template.')
+        check_args(subject, message, gift_template)
         if len(contacts) < 1:
             raise ConflictError('You must supply at least one contact.')
         expected_keys = ['email', 'firstname', 'lastname']
@@ -208,7 +216,6 @@ class Client():
                 attempts += 1
                 warning(f"Request timed out, trying again {3 - attempts} more time(s).")
                 sleep(1.5)
-                continue
             else:
                 error_message = campaign_response.json()['error']['message']
                 error_name = campaign_response.json()['error']['name']
