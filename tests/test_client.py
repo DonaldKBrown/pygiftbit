@@ -1,5 +1,5 @@
 from pygiftbit.giftbit import Client
-from pygiftbit.errors import RegionError, AuthError
+from pygiftbit.errors import KeyLengthError, RegionError, AuthError
 import pytest
 
 
@@ -9,7 +9,7 @@ def test_auth_error():
 
 
 def test_key_length_assertion():
-    with pytest.raises(AssertionError):
+    with pytest.raises(KeyLengthError):
         Client(api_key='bad_key')
 
 

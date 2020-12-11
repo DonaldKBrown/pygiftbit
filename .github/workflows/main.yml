@@ -2,11 +2,13 @@ name: Run Tests and Publish Updates
 on: push
 jobs:
   test:
-    name: Run pytest
+    name: Run pytest and scan with Sonar Cloud
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -14,10 +16,16 @@ jobs:
       - name: Install Dependencies and Test
         env:
           GIFTBIT_API_KEY: ${{ secrets.GIFTBIT_API_KEY }}
+          TEST_GIFT_ID: ${{ secrets.TEST_GIFT_ID }}
         run: |
           export PATH=/home/runner/.local/bin:$PATH
           pip install -r requirements_dev.txt
-          PYTHONPATH=. pytest
+          PYTHONPATH=. pytest --cov-report xml --cov=pygiftbit tests/
+      - name: Scan with SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   publish:
     name: Publish to PyPi
     runs-on: ubuntu-latest

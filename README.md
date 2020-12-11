@@ -76,3 +76,46 @@ Client.get_brand_codes(region=2, currencyisocode='USD', min_price_in_cents=500)
 ### Client.brand_info(brand_code)
 
 This command will retrieve detailed information about a brand. the `brand_code` argument is required and should be a string retrieved from `Client.get_brand_codes()`.
+
+### Client.create_campaign(*args)
+
+This command will create a campaign to send gift cards to multiple recipients, allowing them to choose between multiple cards if you wish. Several arguments are needed for this function:
+
+| Argument Name | Data Type | Required | Description |
+| --- | --- | --- | --- |
+| expiration_date | str | Yes | A `YYYY-MM-DD` formatted date string. After 11:59:59 PM PST on this date, the gifts are no longer redeemable. |
+| contacts | list | Yes | A list of contacts to send gifts to. Contacts must be dicts such as `{'firstname': 'John', 'lastname': 'Doe', 'email': 'john.doe@example.com'}` |
+| brand_codes | list | Yes | A list of brand codes to offer. Must be valid codes from `Client.get_brand_codes()` |
+| price_in_cents | int | Yes | The value of giftcard to send. |
+| id | str | Yes | A unique, memorable ID for this campaign. Used for getting campaign status. |
+| message | str | Possibly | A custom message to send with the gift card. Only required if gift_template is not supplied. |
+| subject | str | Possibly | A custom email subject line to send. Only required if gift_template is not supplied. |
+| gift_template | str | Possibly | The name of a template you have created on the website. Required if message and subject are not supplied. |
+
+### Client.check_campaign(id)
+
+This command will fetch the current status of a previously created campaign. The `id` must be a previously created campaign's `user_supplied_id`.
+
+### Client.check_funds()
+
+This command will show you your current available, pending, and reserved funds. Pending funds are funds you have added but have not yet cleared, reserved funds are funds that have been set aside for gifts, but the gifts have not yet been claimed.
+
+### Client.add_funds(currency, amount_in_cents)
+
+This command is used to add funds to your account using the credit card on file for your account. The `currency` argument can be on of "USD" or "CAD", and the `amount_in_cents` can be anything from 25000 and 1000000.
+
+### Client.list_gifts(**filters)
+
+Retrive a list of previously sent gifts and their statuses. For a full set of filters, view the [documentation for the Giftbit API](https://www.giftbit.com/giftbitapi/#/reference/1/gifts/list-gifts).
+
+### Client.get_gift_status(uuid)
+
+Retrieve the status of a single gift by UUID.
+
+### Client.cancel_gift(uuid)
+
+Cancel a previously sent gift and reclaim the funds to your account. Cannot be done if gift is already redeemed.
+
+### Client.resend_gift(uuid)
+
+Resend the email for a previously sent gift. This should be used if a gift was previously set to `TEMPORARILY_UNDELIVERABLE` or if a customer reaches out and says they accidentally deleted the email. This will not generate a new gift or affect your available fund balance.

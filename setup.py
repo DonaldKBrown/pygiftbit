@@ -12,6 +12,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Donald Brown",
     author_email="donald.k.brown3@gmail.com",
+    url="https://github.com/donaldkbrown/pygiftbit",
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
