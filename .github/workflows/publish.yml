@@ -1,0 +1,25 @@
+name: Publish to PyPi
+on:
+  repository_dispatch:
+    types: [pypi-publish]
+jobs:
+  publish:
+    name: Publish to PyPi
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - name: Install Dependencies and Publish
+        env:
+            TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+            TWINE_USERNAME: __token__
+        run: |
+          export PATH=/home/runner/.local/bin:$PATH
+          pip install wheel
+          pip install -r requirements_dev.txt
+          python check_and_publish.py

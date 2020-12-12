@@ -1,4 +1,4 @@
-name: Run Tests and Publish Updates
+name: Test With Pytest
 on: push
 jobs:
   test:
@@ -21,31 +21,15 @@ jobs:
           export PATH=/home/runner/.local/bin:$PATH
           pip install -r requirements_dev.txt
           PYTHONPATH=. pytest --cov-report xml --cov=pygiftbit tests/
+          sed -i 's/\/home\/runner\/work\/pygiftbit\/pygiftbit\//\/github\/workspace\//g' coverage.xml
       - name: Scan with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  publish:
-    name: Publish to PyPi
-    runs-on: ubuntu-latest
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Trigger Publish Workflow
+        uses: peter-evans/repository-dispatch@v1
         with:
-          python-version: '3.6'
-      - name: Install Dependencies and Publish
-        env:
-            TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-            TWINE_USERNAME: __token__
-        run: |
-          export PATH=/home/runner/.local/bin:$PATH
-          pip install wheel
-          pip install -r requirements_dev.txt
-          python setup.py sdist bdist_wheel
-          twine check dist/*
-          twine upload --non-interactive --repository-url https://upload.pypi.org/legacy/ dist/*
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: donaldkbrown/pygiftbit
+          event-type: pypi-publish

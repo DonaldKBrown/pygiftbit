@@ -1,5 +1,12 @@
 # pygiftbit - A Python Interface for GiftBit
 
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DonaldKBrown_pygiftbit&metric=security_rating)](https://sonarcloud.io/dashboard?id=DonaldKBrown_pygiftbit)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DonaldKBrown_pygiftbit&metric=coverage)](https://sonarcloud.io/dashboard?id=DonaldKBrown_pygiftbit)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DonaldKBrown_pygiftbit&metric=bugs)](https://sonarcloud.io/dashboard?id=DonaldKBrown_pygiftbit)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=DonaldKBrown_pygiftbit&metric=code_smells)](https://sonarcloud.io/dashboard?id=DonaldKBrown_pygiftbit)
+![Test with Pytest](https://github.com/DonaldKBrown/pygiftbit/workflows/Test%20With%20Pytest/badge.svg)
+![Publish to PyPi](https://github.com/DonaldKBrown/pygiftbit/workflows/Publish%20to%20%PyPi/badge.svg)
+
 pygiftbit is a simple API wrapper for the [GiftBit](https://giftbit.com) Gift API so that you can easily send out e-giftcards of various kinds over e-mail. It is designed for you to be able to easily:
 
 * Check for supported gift cards
