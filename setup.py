@@ -6,7 +6,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="pygiftbit",
-    version="1.0.2",
+    version="1.0.3",
     description="A simple Python wrapper for the Giftbit API",
     long_description=README,
     long_description_content_type="text/markdown",
